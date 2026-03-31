@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI as GoogleGenerativeAI } from "@google/genai";
 import { AnalysisMetrics } from "../types";
 import { IELTS_QUESTIONS } from "../constants";
 
