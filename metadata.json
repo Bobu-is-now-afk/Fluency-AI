@@ -1,0 +1,8 @@
+{
+  "name": "Fluency Coach AI",
+  "description": "An AI-powered professional communication coach providing real-time biometric feedback and standardized IELTS/CEFR linguistic benchmarking.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
