@@ -1,23 +1,22 @@
-
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { AnalysisMetrics } from "../types";
 import { IELTS_QUESTIONS } from "../constants";
 
 /**
- * LinguisticCoachService: The primary engine for professional fluency assessment.
- * Consolidates all Gemini API interactions for client-side execution.
+ * LinguisticCoachService: 專業流利度評核引擎。
+ * 修正了型別定義與 API 調用邏輯。
  */
 export class LinguisticCoachService {
   /**
-   * Internal helper to get a fresh AI instance.
+   * 獲取 AI 實例，修正了 Vite 環境下的變數讀取與型別斷言。
    */
   public getAI() {
-  const key = import.meta.env.VITE_GEMINI_API_KEY; // 這是 Vite 的標準
-  return new GoogleGenAI({ apiKey: key });
+    const key = (import.meta as any).env.VITE_GEMINI_API_KEY;
+    if (!key) throw new Error("Missing VITE_GEMINI_API_KEY in environment");
+    return new GoogleGenerativeAI(key);
   }
 
   private getTopicPoints(topicTitle: string): string[] {
-    // Search in Part 2 questions
     const part2 = IELTS_QUESTIONS.part2 as Record<string, Array<{ topic: string; points: string[] }>>;
     for (const category in part2) {
       const questions = part2[category];
@@ -39,20 +38,12 @@ export class LinguisticCoachService {
       sampleArticle?: string | null;
     }
   ): Promise<Partial<AnalysisMetrics>> {
-    const ai = this.getAI();
+    const genAI = this.getAI();
     const topicPoints = config.sampleArticle ? this.getTopicPoints(config.sampleArticle) : [];
-
     const isEnglish = config.language.toLowerCase() === 'en' || config.language.toLowerCase() === 'english';
 
     const systemInstruction = `You are a high-precision linguistic auditor for a professional fluency assessment platform. 
-    Your tone is cold, clinical, and strictly analytical. Avoid all encouraging or subjective language.
-    Perform a medical-grade audit of the user's speech.
-    
-    SCORING LOGIC:
-    - If language is English: Use IELTS 0-9 criteria for all scores.
-    - If language is NOT English: Use a 0-100 scale for primary scores (score_100, subscores_100), but still provide an approximate IELTS 0-9 equivalent for the 'ielts_score' field.
-    
-    Focus on four dimensions: Fluency, Lexical Resource, Grammatical Range and Accuracy, and Rhetorical Effectiveness.
+    Your tone is cold, clinical, and strictly analytical.
     Output MUST be valid JSON conforming to the diagnostic dashboard schema.`;
 
     const userPrompt = `AUDIT REQUEST:
@@ -61,78 +52,29 @@ export class LinguisticCoachService {
     Context: ${config.context}
     Biometrics: Eye Contact ${config.eyeContact.toFixed(1)}%, Smile ${config.smile.toFixed(1)}%
     ${config.sampleArticle ? `Target Topic: "${config.sampleArticle}"` : "Spontaneous Speech"}
-    ${topicPoints.length > 0 ? `Required Points to Cover: ${topicPoints.join(", ")}` : ""}
-    
-    TASK:
-    1. Transcribe the audio precisely.
-    2. Calculate WPM and linguistic metrics.
-    3. Score for: Fluency, Lexical, Grammar, Rhetorical.
-    4. Identify covered and missing points from the required list.
-    5. Provide technical feedback tips (no encouragement).`;
+    ${topicPoints.length > 0 ? `Required Points to Cover: ${topicPoints.join(", ")}` : ""}`;
 
-    const response = await ai.models.generateContent({
+    // 使用 getGenerativeModel 替代 models.generateContent
+    const model = genAI.getGenerativeModel({ 
       model: 'gemini-1.5-flash',
-      contents: {
+      systemInstruction
+    });
+
+    const result = await model.generateContent({
+      contents: [{
+        role: "user",
         parts: [
           { text: userPrompt },
           { inlineData: { mimeType, data: base64Audio } }
         ]
-      },
-      config: {
-        systemInstruction,
+      }],
+      generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            transcription: { type: Type.STRING },
-            wpm: { type: Type.NUMBER },
-            ielts_score: { type: Type.NUMBER, description: "IELTS 0-9 equivalent (even for non-English)" },
-            score_100: { type: Type.NUMBER, description: "0-100 scale score (required if non-English)" },
-            ielts_subscores: {
-              type: Type.OBJECT,
-              properties: {
-                fluency: { type: Type.NUMBER },
-                lexical: { type: Type.NUMBER },
-                grammar: { type: Type.NUMBER },
-                rhetorical: { type: Type.NUMBER }
-              },
-              required: ["fluency", "lexical", "grammar", "rhetorical"]
-            },
-            subscores_100: {
-              type: Type.OBJECT,
-              properties: {
-                fluency: { type: Type.NUMBER },
-                lexical: { type: Type.NUMBER },
-                grammar: { type: Type.NUMBER },
-                rhetorical: { type: Type.NUMBER }
-              },
-              required: ["fluency", "lexical", "grammar", "rhetorical"]
-            },
-            cefr_level: { type: Type.STRING },
-            audit_report: {
-              type: Type.OBJECT,
-              properties: {
-                points_covered: { type: Type.ARRAY, items: { type: Type.STRING } },
-                points_missing: { type: Type.ARRAY, items: { type: Type.STRING } },
-                technical_accuracy: { type: Type.NUMBER },
-                coherence_score: { type: Type.NUMBER }
-              },
-              required: ["points_covered", "points_missing", "technical_accuracy", "coherence_score"]
-            },
-            feedback_tips: { type: Type.ARRAY, items: { type: Type.STRING } },
-            emotion: { type: Type.STRING },
-            emotion_confidence: { type: Type.NUMBER },
-            emotion_explanation: { type: Type.STRING },
-            vocal_energy: { type: Type.NUMBER },
-            pitch_range: { type: Type.NUMBER },
-            emotional_stability: { type: Type.NUMBER }
-          },
-          required: ["transcription", "wpm", "ielts_score", "ielts_subscores", "cefr_level", "audit_report", "feedback_tips", "emotion", "emotion_confidence", "emotion_explanation", "vocal_energy", "pitch_range", "emotional_stability"]
-        }
       }
     });
 
-    const text = typeof response.text === 'function' ? response.text() : response.text;
+    const response = await result.response;
+    const text = response.text();
     if (!text) throw new Error("Audit failed: Empty response from AI.");
     return JSON.parse(text);
   }
@@ -144,90 +86,40 @@ export class LinguisticCoachService {
       part: number;
       question: string;
       duration: number;
-      language?: string; // Optional language override
+      language?: string;
     }
   ): Promise<Partial<AnalysisMetrics>> {
-    const ai = this.getAI();
+    const genAI = this.getAI();
     const lang = config.language || 'en';
     const isEnglish = lang.toLowerCase() === 'en' || lang.toLowerCase() === 'english';
 
     const systemInstruction = `You are an official IELTS Senior Examiner performing a cold, precise audit. 
-    Strictly adhere to IELTS Band Descriptors for English. 
-    
-    SCORING LOGIC:
-    - If language is English: Use IELTS 0-9 criteria for all scores.
-    - If language is NOT English: Use a 0-100 scale for primary scores (score_100, subscores_100), but still provide an approximate IELTS 0-9 equivalent for the 'ielts_score' field.
-    
     Output MUST be valid JSON.`;
 
     const prompt = `OFFICIAL AUDIT: Part ${config.part}
-    Language: ${lang} (Primary Scoring Scale: ${isEnglish ? "IELTS 0-9" : "0-100"})
-    Question: "${config.question}"
-    Evaluate: Fluency, Lexical Resource, Grammatical Range, and Rhetorical Effectiveness.`;
+    Language: ${lang}
+    Question: "${config.question}"`;
 
-    const response = await ai.models.generateContent({
+    const model = genAI.getGenerativeModel({ 
       model: 'gemini-1.5-flash',
-      contents: {
+      systemInstruction
+    });
+
+    const result = await model.generateContent({
+      contents: [{
+        role: "user",
         parts: [
           { text: prompt },
           { inlineData: { mimeType, data: base64Audio } }
         ]
-      },
-      config: {
-        systemInstruction,
+      }],
+      generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            transcription: { type: Type.STRING },
-            wpm: { type: Type.NUMBER },
-            ielts_score: { type: Type.NUMBER, description: "IELTS 0-9 equivalent" },
-            score_100: { type: Type.NUMBER, description: "0-100 scale score" },
-            ielts_subscores: {
-              type: Type.OBJECT,
-              properties: {
-                fluency: { type: Type.NUMBER },
-                lexical: { type: Type.NUMBER },
-                grammar: { type: Type.NUMBER },
-                rhetorical: { type: Type.NUMBER }
-              },
-              required: ["fluency", "lexical", "grammar", "rhetorical"]
-            },
-            subscores_100: {
-              type: Type.OBJECT,
-              properties: {
-                fluency: { type: Type.NUMBER },
-                lexical: { type: Type.NUMBER },
-                grammar: { type: Type.NUMBER },
-                rhetorical: { type: Type.NUMBER }
-              },
-              required: ["fluency", "lexical", "grammar", "rhetorical"]
-            },
-            cefr_level: { type: Type.STRING },
-            audit_report: {
-              type: Type.OBJECT,
-              properties: {
-                points_covered: { type: Type.ARRAY, items: { type: Type.STRING } },
-                points_missing: { type: Type.ARRAY, items: { type: Type.STRING } },
-                technical_accuracy: { type: Type.NUMBER },
-                coherence_score: { type: Type.NUMBER }
-              },
-              required: ["points_covered", "points_missing", "technical_accuracy", "coherence_score"]
-            },
-            feedback_tips: { type: Type.ARRAY, items: { type: Type.STRING } },
-            emotion: { type: Type.STRING },
-            emotion_confidence: { type: Type.NUMBER },
-            emotion_explanation: { type: Type.STRING },
-            vocal_energy: { type: Type.NUMBER },
-            pitch_range: { type: Type.NUMBER },
-            emotional_stability: { type: Type.NUMBER }
-          },
-          required: ["transcription", "wpm", "ielts_score", "ielts_subscores", "cefr_level", "audit_report", "feedback_tips", "emotion", "emotion_confidence", "emotion_explanation", "vocal_energy", "pitch_range", "emotional_stability"]
-        }
       }
     });
 
-    const text = typeof response.text === 'function' ? response.text() : response.text;
+    const response = await result.response;
+    const text = response.text();
     if (!text) throw new Error("Audit failed: Empty response from AI.");
     return JSON.parse(text);
   }
