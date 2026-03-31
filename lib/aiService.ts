@@ -12,7 +12,8 @@ export class LinguisticCoachService {
    * Internal helper to get a fresh AI instance.
    */
   public getAI() {
-    return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const key = import.meta.env.VITE_GEMINI_API_KEY; // 這是 Vite 的標準
+  return new GoogleGenAI({ apiKey: key });
   }
 
   private getTopicPoints(topicTitle: string): string[] {
@@ -70,7 +71,7 @@ export class LinguisticCoachService {
     5. Provide technical feedback tips (no encouragement).`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.1-pro-preview',
+      model: 'gemini-1.5-flash',
       contents: {
         parts: [
           { text: userPrompt },
@@ -131,7 +132,7 @@ export class LinguisticCoachService {
       }
     });
 
-    const text = response.text;
+    const text = typeof response.text === 'function' ? response.text() : response.text;
     if (!text) throw new Error("Audit failed: Empty response from AI.");
     return JSON.parse(text);
   }
@@ -165,7 +166,7 @@ export class LinguisticCoachService {
     Evaluate: Fluency, Lexical Resource, Grammatical Range, and Rhetorical Effectiveness.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.1-pro-preview',
+      model: 'gemini-1.5-flash',
       contents: {
         parts: [
           { text: prompt },
@@ -226,7 +227,7 @@ export class LinguisticCoachService {
       }
     });
 
-    const text = response.text;
+    const text = typeof response.text === 'function' ? response.text() : response.text;
     if (!text) throw new Error("Audit failed: Empty response from AI.");
     return JSON.parse(text);
   }
