@@ -7,20 +7,17 @@ import { IELTS_QUESTIONS } from "../constants";
  */
 export class LinguisticCoachService {
   public getAI() {
-    // 解決 ImportMeta 報錯
-    const key = (import.meta as any)["env"].VITE_GEMINI_API_KEY;
-    if (!key) throw new Error("Missing VITE_GEMINI_API_KEY");
-    return new GoogleGenAI({ apiKey: key });
-  }
+    // 優先嘗試從 Vite 標準路徑讀取，失敗則嘗試從 process.env 讀取（針對某些 Node 構建環境）
+    const key = (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+                (process.env as any).VITE_GEMINI_API_KEY;
 
-  private getTopicPoints(topicTitle: string): string[] {
-    const part2 = IELTS_QUESTIONS.part2 as Record<string, Array<{ topic: string; points: string[] }>>;
-    for (const category in part2) {
-      const questions = part2[category];
-      const found = questions.find((q) => q.topic === topicTitle);
-      if (found) return found.points;
+    if (!key) {
+      // 這行日誌會幫你在瀏覽器 Console 確定到底是誰沒抓到
+      console.error("Critical: VITE_GEMINI_API_KEY is not defined in any environment source.");
+      throw new Error("Missing API Key");
     }
-    return [];
+    
+    return new GoogleGenAI({ apiKey: key });
   }
 
   async analyzeSpeech(
