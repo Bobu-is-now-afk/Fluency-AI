@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES } from '../constants';
-import { Type } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import html2canvas from 'html2canvas';
 import { coachService } from '../lib/aiService';
 
