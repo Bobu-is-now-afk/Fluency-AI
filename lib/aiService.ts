@@ -2,22 +2,23 @@ import { GoogleGenAI } from "@google/genai";
 import { AnalysisMetrics } from "../types";
 import { IELTS_QUESTIONS } from "../constants";
 
-/**
- * LinguisticCoachService: 兼容舊版 SDK 的評核引擎。
- */
 export class LinguisticCoachService {
   public getAI() {
-    // 優先嘗試從 Vite 標準路徑讀取，失敗則嘗試從 process.env 讀取（針對某些 Node 構建環境）
-    const key = (import.meta as any).env?.VITE_GEMINI_API_KEY || 
-                (process.env as any).VITE_GEMINI_API_KEY;
-
-    if (!key) {
-      // 這行日誌會幫你在瀏覽器 Console 確定到底是誰沒抓到
-      console.error("Critical: VITE_GEMINI_API_KEY is not defined in any environment source.");
-      throw new Error("Missing API Key");
-    }
+    const env = (import.meta as any)["env"] || {};
+    const key = env.VITE_GEMINI_API_KEY || (process.env as any).VITE_GEMINI_API_KEY;
     
+    if (!key) throw new Error("Missing API Key");
     return new GoogleGenAI({ apiKey: key });
+  }
+
+  private getTopicPoints(topicTitle: string): string[] {
+    const part2 = IELTS_QUESTIONS.part2 as Record<string, Array<{ topic: string; points: string[] }>>;
+    for (const category in part2) {
+      const questions = part2[category];
+      const found = questions.find((q) => q.topic === topicTitle);
+      if (found) return found.points;
+    }
+    return [];
   }
 
   async analyzeSpeech(
@@ -33,15 +34,17 @@ export class LinguisticCoachService {
     }
   ): Promise<Partial<AnalysisMetrics>> {
     const ai = this.getAI();
-    const isEnglish = config.language.toLowerCase() === 'en' || config.language.toLowerCase() === 'english';
+    
+    // 重點：在舊版 SDK 中，必須先獲取 model 實例
+    // 如果 getGenerativeModel 報錯，請嘗試 ai.models.get("gemini-1.5-flash")
+    const model = (ai as any).getGenerativeModel ? 
+                  (ai as any).getGenerativeModel({ model: "gemini-1.5-flash" }) : 
+                  (ai as any).models.get({ model: "gemini-1.5-flash" });
 
-    const systemInstruction = `You are a high-precision linguistic auditor. Output MUST be valid JSON.`;
     const userPrompt = `AUDIT REQUEST: Duration: ${config.duration}s, Context: ${config.context}`;
 
-    // 修正：針對舊版 SDK 的調用方式
-    // 在舊版中，generateContent 是直接在 ai.models 上執行的
-    const response = await (ai as any).generateContent({
-      model: "gemini-1.5-flash", // 嘗試不帶 models/
+    // 呼叫方法必須在 model 實例上
+    const result = await model.generateContent({
       contents: [{
         role: "user",
         parts: [
@@ -49,13 +52,13 @@ export class LinguisticCoachService {
           { inlineData: { mimeType, data: base64Audio } }
         ]
       }],
-      // 確保 config 是放在這裡
       generationConfig: {
         responseMimeType: "application/json"
       }
     });
-    // 舊版 SDK 的 response 結構通常直接包含 text
-    const text = response.text;
+
+    const response = await result.response;
+    const text = response.text();
     return JSON.parse(text);
   }
 
@@ -70,10 +73,13 @@ export class LinguisticCoachService {
     }
   ): Promise<Partial<AnalysisMetrics>> {
     const ai = this.getAI();
+    const model = (ai as any).getGenerativeModel ? 
+                  (ai as any).getGenerativeModel({ model: "gemini-1.5-flash" }) : 
+                  (ai as any).models.get({ model: "gemini-1.5-flash" });
+
     const prompt = `OFFICIAL AUDIT: Part ${config.part}, Question: "${config.question}"`;
 
-    const response = await (ai as any).models.generateContent({
-      model: "gemini-1.5-flash",
+    const result = await model.generateContent({
       contents: [{
         role: "user",
         parts: [
@@ -81,13 +87,13 @@ export class LinguisticCoachService {
           { inlineData: { mimeType, data: base64Audio } }
         ]
       }],
-      config: {
+      generationConfig: {
         responseMimeType: "application/json"
       }
     });
 
-    const text = response.text;
-    return JSON.parse(text);
+    const response = await result.response;
+    return JSON.parse(response.text());
   }
 }
 
