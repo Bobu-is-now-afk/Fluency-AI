@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES, COACHING_CONTEXTS } from '../constants';
-import { Type } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { coachService } from '../lib/aiService';
 
 interface ReportViewProps {
