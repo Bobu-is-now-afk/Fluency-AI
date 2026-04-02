@@ -7,21 +7,13 @@ export class LinguisticCoachService {
    * 獲取 AI 實例
    */
   public getAI() {
-    // 解決 Vite 環境下變數讀取問題
-    const key = (import.meta as any).env?.VITE_GEMINI_API_KEY || (process.env as any).VITE_GEMINI_API_KEY;
-    if (!key) throw new Error("VITE_GEMINI_API_KEY is missing");
-    return new GoogleGenerativeAI(key);
-  }
-
-  private getTopicPoints(topicTitle: string): string[] {
-    const part2 = IELTS_QUESTIONS.part2 as Record<string, Array<{ topic: string; points: string[] }>>;
-    for (const category in part2) {
-      const questions = part2[category];
-      const found = questions.find((q) => q.topic === topicTitle);
-      if (found) return found.points;
+      // 移除 process.env，只保留 Vite 的標準讀取方式
+      const env = (import.meta as any).env;
+      const key = env?.VITE_GEMINI_API_KEY;
+      
+      if (!key) throw new Error("VITE_GEMINI_API_KEY is missing");
+      return new GoogleGenerativeAI(key);
     }
-    return [];
-  }
 
   async analyzeSpeech(
     base64Audio: string, 
