@@ -40,8 +40,8 @@ export class LinguisticCoachService {
 
     // 修正：針對舊版 SDK 的調用方式
     // 在舊版中，generateContent 是直接在 ai.models 上執行的
-    const response = await (ai as any).models.generateContent({
-      model: "models/gemini-1.5-flash",
+    const response = await (ai as any).generateContent({
+      model: "gemini-1.5-flash", // 嘗試不帶 models/
       contents: [{
         role: "user",
         parts: [
@@ -49,12 +49,11 @@ export class LinguisticCoachService {
           { inlineData: { mimeType, data: base64Audio } }
         ]
       }],
-      config: {
-        systemInstruction,
+      // 確保 config 是放在這裡
+      generationConfig: {
         responseMimeType: "application/json"
       }
     });
-
     // 舊版 SDK 的 response 結構通常直接包含 text
     const text = response.text;
     return JSON.parse(text);
@@ -74,7 +73,7 @@ export class LinguisticCoachService {
     const prompt = `OFFICIAL AUDIT: Part ${config.part}, Question: "${config.question}"`;
 
     const response = await (ai as any).models.generateContent({
-      model: "models/gemini-1.5-flash",
+      model: "gemini-1.5-flash",
       contents: [{
         role: "user",
         parts: [
