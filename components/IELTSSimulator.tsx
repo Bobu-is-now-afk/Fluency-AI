@@ -13,7 +13,7 @@ import {
   X,
   Video
 } from 'lucide-react';
-import { Modality } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { IELTS_QUESTIONS } from '../constants';
 import { AnalysisMetrics } from '../types';
 import { useFaceMesh } from '../hooks/useFaceMesh';
