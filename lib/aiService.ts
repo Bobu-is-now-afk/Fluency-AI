@@ -1,14 +1,16 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AnalysisMetrics } from "../types";
 import { IELTS_QUESTIONS } from "../constants";
 
 export class LinguisticCoachService {
+  /**
+   * 獲取 AI 實例
+   */
   public getAI() {
-    const env = (import.meta as any)["env"] || {};
-    const key = env.VITE_GEMINI_API_KEY || (process.env as any).VITE_GEMINI_API_KEY;
-    
-    if (!key) throw new Error("Missing API Key");
-    return new GoogleGenAI({ apiKey: key });
+    // 解決 Vite 環境下變數讀取問題
+    const key = (import.meta as any).env?.VITE_GEMINI_API_KEY || (process.env as any).VITE_GEMINI_API_KEY;
+    if (!key) throw new Error("VITE_GEMINI_API_KEY is missing");
+    return new GoogleGenerativeAI(key);
   }
 
   private getTopicPoints(topicTitle: string): string[] {
@@ -33,32 +35,25 @@ export class LinguisticCoachService {
       sampleArticle?: string | null;
     }
   ): Promise<Partial<AnalysisMetrics>> {
-    const ai = this.getAI();
+    const genAI = this.getAI();
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // 設定 Prompt
+    const prompt = `You are a professional linguistic auditor. 
+    Analyze the following audio for fluency, grammar, and pronunciation.
+    Return the result ONLY as a JSON object.
     
-    // 重點：在舊版 SDK 中，必須先獲取 model 實例
-    // 如果 getGenerativeModel 報錯，請嘗試 ai.models.get("gemini-1.5-flash")
-    const model = (ai as any).getGenerativeModel ? 
-                  (ai as any).getGenerativeModel({ model: "gemini-1.5-flash" }) : 
-                  (ai as any).models.get({ model: "gemini-1.5-flash" });
+    Context: ${config.context}
+    Language: ${config.language}`;
 
-    const userPrompt = `AUDIT REQUEST: Duration: ${config.duration}s, Context: ${config.context}`;
-
-    // 呼叫方法必須在 model 實例上
-    const result = await model.generateContent({
-      contents: [{
-        role: "user",
-        parts: [
-          { text: userPrompt },
-          { inlineData: { mimeType, data: base64Audio } }
-        ]
-      }],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
-    });
+    // 使用官方推薦的 generateContent 結構
+    const result = await model.generateContent([
+      { text: prompt },
+      { inlineData: { mimeType, data: base64Audio } }
+    ]);
 
     const response = await result.response;
-    const text = response.text();
+    const text = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(text);
   }
 
@@ -72,28 +67,19 @@ export class LinguisticCoachService {
       language?: string;
     }
   ): Promise<Partial<AnalysisMetrics>> {
-    const ai = this.getAI();
-    const model = (ai as any).getGenerativeModel ? 
-                  (ai as any).getGenerativeModel({ model: "gemini-1.5-flash" }) : 
-                  (ai as any).models.get({ model: "gemini-1.5-flash" });
+    const genAI = this.getAI();
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const prompt = `OFFICIAL AUDIT: Part ${config.part}, Question: "${config.question}"`;
+    const prompt = `OFFICIAL IELTS AUDIT: Part ${config.part}, Question: "${config.question}"`;
 
-    const result = await model.generateContent({
-      contents: [{
-        role: "user",
-        parts: [
-          { text: prompt },
-          { inlineData: { mimeType, data: base64Audio } }
-        ]
-      }],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
-    });
+    const result = await model.generateContent([
+      { text: prompt },
+      { inlineData: { mimeType, data: base64Audio } }
+    ]);
 
     const response = await result.response;
-    return JSON.parse(response.text());
+    const text = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
+    return JSON.parse(text);
   }
 }
 
