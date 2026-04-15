@@ -1,6 +1,6 @@
 {
-  "name": "Fluency Coach AI",
-  "description": "An AI-powered professional communication coach providing real-time biometric feedback and standardized IELTS/CEFR linguistic benchmarking.",
+  "name": "IELTS Audit & Diagnostic System",
+  "description": "Professional IELTS Audit & Linguistic Diagnostic Platform with real-time biometric tracking and standardized IELTS/CEFR benchmarking.",
   "requestFramePermissions": [
     "camera",
     "microphone"

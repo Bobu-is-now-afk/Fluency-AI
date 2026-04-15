@@ -327,18 +327,22 @@ const ZH_HK_CASUAL = {
     "我好鍾意喺週末去行山。香港有好多好靚嘅行山徑，例如龍脊。行山唔單止可以鍛煉身體，仲可以欣賞到好靚嘅風景。之後我通常會同朋友一齊去食一餐好豐富嘅點心。",
     "煮食係我嘅興趣。我最鍾意整嘅係傳統嘅廣東菜，好似蒸魚或者炒菜咁。我覺得親手為屋企人準備晚餐係一件好幸福嘅事。我仲好鍾意去街市買新鮮嘅食材，嗰度好熱鬧。",
     "我每日都會搭地鐵返工。雖然有時會好迫，但係地鐵真係好方便同埋準時。喺車上面，我鍾意聽音樂或者睇書。我覺得呢段時間係我每日唯一可以靜落嚟嘅時間。",
-    "我好鍾意去旅行。舊年我去咗日本，嗰度嘅嘢食同埋文化都好吸引我。我特別鍾意食拉麵同埋壽司。我希望出年可以去歐洲，睇下嗰度嘅歷史建築同埋試下唔同嘅街頭小食。"
+    "我好鍾意去旅行。舊年我去咗日本，嗰度嘅嘢食同埋文化都好吸引我。我特別鍾意食拉麵同埋壽司。我希望出年可以去歐洲，睇下嗰度嘅歷史建築同埋試下唔同嘅街頭小食。",
+    "我平時鍾意去圖書館借書睇。嗰度好安靜，可以令我集中精神。我最近睇緊一本關於心理學嘅書，覺得好有趣。閱讀可以幫我放鬆心情，亦都可以學到好多新知識。"
   ],
   intermediate: [
-    "我非常鍾意攝影，雖然我仲係一個初學者。我鍾意喺週六朝早光線仲係好柔和嘅時候喺我嘅社區進行“攝影散步”。我發現通過鏡頭睇世界會令我更注意細節。",
-    "最近，我一直喺努力減少塑料嘅使用，以更加環保。起初尋找洗頭水同埋食物儲存嘅替代品有啲挑戰，但知道自己喺做出微小嘅改變感覺好好。"
+    "我非常鍾意攝影，雖然我仲係一個初學者。我鍾意喺週六朝早光線仲係好柔和嘅時候喺我嘅社區進行“攝影散步”。我發現通過鏡頭睇世界會令我更注意細節，例如舊建築嘅紋理或者街頭嘅小故事。",
+    "最近，我一直喺努力減少塑料嘅使用，以更加環保。起初尋找洗頭水同埋食物儲存嘅替代品有啲挑戰，但知道自己喺做出微小嘅改變感覺好好。我依家會帶自己嘅餐具同埋購物袋，希望可以為地球出一分力。",
+    "我最近開始學習冥想，因為我覺得都市生活節奏太快，壓力好大。每日用十五分鐘靜坐，觀察自己嘅呼吸，可以幫我清空思緒。雖然一開始好難集中，但慢慢練習之後，我發現自己嘅情緒變得穩定咗好多。",
+    "我好鍾意同朋友一齊去探索香港嘅隱世小店。有啲咖啡店匿喺舊工業大廈入面，裝修好有特色。我哋會喺嗰度坐一個下晝，傾下偈，分享下生活入面嘅趣事。呢種慢生活嘅節奏令我覺得好充實。",
+    "我對本地文化好有興趣，所以有時會去參觀一啲歷史建築或者博物館。了解香港嘅過去令我對呢個城市有更深嘅歸屬感。我覺得保護呢啲文化遺產係非常重要嘅，因為佢哋代表咗我哋嘅根。"
   ],
   advanced: [
-    "我發現，隨住我哋嘅生活變得越來越數字化，觸覺式嘅模擬嗜好對我嚟講變得更加重要。最近我開始咗手工裝訂書本，呢種工藝需要極高嘅精確度同埋耐性。",
-    "“城市再野化”嘅概念係我最近非常熱衷嘅嘢。呢個諗法係讓自然重新奪回城市嘅小角落，即使喺工業化程度最高嘅環境中都能培育生物多樣性。",
-    "我一直喺思考公共圖書館喺21世紀不斷演變嘅角色。佢哋已經從單純嘅紙質書籍存儲庫轉變為提供平等獲取技術同埋資訊嘅至關重要嘅社區中心。",
-    "有一種迷人嘅心理現象被稱為“概觀效應”，佢描述咗宇航員從太空睇到地球時所經歷嘅認知轉變。雖然我可能永遠唔會離開大氣層，但我發現高海拔徒步旅行提供咗一種陸地上嘅等效體驗。",
-    "我最近一直喺探索美食與地緣政治嘅歷史交匯點。香料貿易點樣從字面上繪製咗我哋嘅世界地圖，以及某些食材（如薯仔或辣椒）喺引入後點樣徹底改變咗整個文化，呢樣嘢真係令人嘆為觀止。"
+    "我發現，隨住我哋嘅生活變得越來越數字化，觸覺式嘅模擬嗜好對我嚟講變得更加重要。最近我開始咗手工裝訂書本，呢種工藝需要極高嘅精確度同埋耐性。將紙張、線同埋皮革轉化為一個可以承載思想嘅實體，令我感到好滿足。",
+    "“城市再野化”嘅概念係我最近非常熱衷嘅嘢。呢個諗法係讓自然重新奪回城市嘅小角落，即使喺工業化程度最高嘅環境中都能培育生物多樣性。我正同本地社區團體合作，嘗試將一啲廢棄嘅空地轉化為小花園。",
+    "我一直喺思考公共圖書館喺21世紀不斷演變嘅角色。佢哋已經從單純嘅紙質書籍存儲庫轉變為提供平等獲取技術同埋資訊嘅至關重要嘅社區中心。我參加咗一啲關於數字素養嘅講座，對嗰度多元化嘅受眾印象深刻。",
+    "有一種迷人嘅心理現象被稱為“概觀效應”，佢描述咗宇航員從太空睇到地球時所經歷嘅認知轉變。雖然我可能永遠唔會離開大氣層，但我發現高海拔徒步旅行提供咗一種陸地上嘅等效體驗，令我重新思考人與自然嘅關係。",
+    "我最近一直喺探索美食與地緣政治嘅歷史交匯點。香料貿易點樣從字面上繪製咗我哋嘅世界地圖，以及某些食材（如薯仔或辣椒）喺引入後點樣徹底改變咗整個文化，呢樣嘢真係令人嘆為觀止。烹飪其實係一種跨文明嘅對話。"
   ]
 };
 const ZH_HK_SPEECH = {
@@ -442,17 +446,23 @@ const IT_INTERVIEW = {
   beginner: [
     "Buongiorno. Mi chiamo Alex. Voglio lavorare qui perché mi piace la tecnologia. Sono un grande lavoratore e imparo in fretta. Nel mio ultimo lavoro ho aiutato molti clienti ogni giorno. Sono felice di essere qui oggi e spero di unirmi presto al vostro team.",
     "Sono interessato a questo lavoro perché voglio far crescere le mie competenze. Sono bravo a lavorare con le persone e arrivo sempre in orario. Mi piace risolvere piccoli problemi e aiutare il mio responsabile. Grazie per questa opportunità.",
-    "Il mio più grande pregio è la pazienza. Quando un cliente è insoddisatto, lo ascolto e cerco di aiutorlo. Penso che questo sia importante for questo ruolo. Non vedo l'ora di saperne di più sulla vostra azienda oggi. Grazie."
+    "Il mio più grande pregio è la pazienza. Quando un cliente è insoddisatto, lo ascolto e cerco di aiutorlo. Penso che questo sia importante for questo ruolo. Non vedo l'ora di saperne di più sulla vostra azienda oggi. Grazie.",
+    "Di solito lavoro dalle nove alle cinque, ma sono flessibile. Se il team ha bisogno di aiuto nei fine settimana, posso venire. Voglio essere un membro utile dell'ufficio. Sono una persona positiva e mi piace lavorare con gli altri.",
+    "Nel mio tempo libero mi piace imparare cose nuove. Recentemente ho completato un corso base di informatica. Voglio usare quello che ho imparato per aiutare la vostra azienda. Sono pronto a iniziare il prima possibile. Grazie."
   ],
   intermediate: [
     "Lavoro nel servizio clienti da tre anni. Nel mio ruolo precedente, ero responsabile della gestione delle richieste dei clienti e della risoluzione di problemi tecnici. Mi piace molto interagire con le persone e trovare soluzioni ai loro problemi. Credo che le mie capacità comunicative mi rendano un forte candidato.",
     "Uno dei miei più grandi successi è stato guidare un piccolo progeto for migliorare il sistema di archiviazione dell'ufficio. Prima era disorganizzato, così ho coordinato il team for digitalizzare i nostri documenti. Questo ci ha fatto risparmiare circa cinque ore di lavoro ogni settimana.",
-    "Quando affronto una situazione difficile al lavoro, cerco di mantenere la calma e analizzare il problema in modo logico. Ad esempio, se abbiamo un improvviso aumento di clienti, do la priorità ai compiti più urgenti. Penso che sia essenziale mantenere un ateggiaggio positivo anche sotto pressione."
+    "Quando affronto una situazione difficile al lavoro, cerco di mantenere la calma e analizzare il problema in modo logico. Ad esempio, se abbiamo un improvviso aumento di clienti, do la priorità ai compiti più urgenti. Penso che sia essenziale mantenere un ateggiaggio positivo anche sotto pressione.",
+    "Sono particolarmente attratto da questo ruolo per la reputazione di innovazione della vostra azienda nel settore tecnologico. Ho seguito i vostri recenti lanci di prodotti e sono rimasto colpito dal vostro impegno per l'esperienza utente. Ho esperienza con strumenti simili.",
+    "Tra cinque anni, spero di ricoprire un ruolo senior in cui poter fare da mentore ai nuovi dipendenti. Credo che l'apprendimento continuo sia la chiave del successo in ogni carriera. Attualmente sto seguendo un corso online di gestione dei progetti."
   ],
   advanced: [
     "Durante il mio mandato come capoprogetto, ho costantemente dimostrato la capacità di navigare in sfide organizzative complesse mantenendo l'attenzione sugli obiettivi aziendali principali. Eccello in ambienti che richiedono pensiero strategico e capacità di sintetizzare dati da molteplici fonti.",
     "Definisco il successo professionale non solo dal raggiungimento dei KPI, ma dal valore sostenibile che creiamo for gli stakeholder e la comunità in generale. Nel mio precedente ruolo esecutivo, ho guidato un'iniziativa di trasformazione digitale che ha aumentato la trasparenza operativa.",
-    "Nel gestire conflitti ad alta posta in gioco all'interno di un dipartimento, utilizzo un approccio non conflittuale basato sulla negoziazione degli interessi. Ricordo un disaccordo tra i team di ingegneria e marketing riguardante la roadmap del prodotro. Facilitando workshop mirati, ho aiutato le parti a identificare obiettivi comuni."
+    "Nel gestire conflitti ad alta posta in gioco all'interno di un dipartimento, utilizzo un approccio non conflittuale basato sulla negoziazione degli interessi. Ricordo un disaccordo tra i team di ingegneria e marketing riguardante la roadmap del prodotro. Facilitando workshop mirati, ho aiutato le parti a identificare obiettivi comuni.",
+    "Sono particolarmente incuriosito dalla posizione unica che la vostra azienda occupa all'intersezione tra fintech e banca etica. Le mie recenti ricerche sulla finanza decentralizzata mi hanno portato a credere che il settore sia a un punto di svolta.",
+    "La mia filosofia sul capitale umano è che siamo più efficaci quando allineiamo le passioni individuali con lo scopo organizzativo. Ho una comprovata esperienza nel ridurre il turnover implementando percorsi di sviluppo personalizzati."
   ]
 };
 
@@ -460,17 +470,23 @@ const IT_CASUAL = {
   beginner: [
     "Ciao! Oggi è una bellissima giornata. Mi piace il sole e il cielo azzurro. Di solito vado a fare una passeggiata al parco dopo pranzo. Mi fa sentire felice e in salute. Cosa ti piace fare quando il tempo è bello?",
     "Amo mangiare cibo italiano. Il mio piatro preferito è la pizza con molto formaggio. A volte vado in un piccolo ristorante vicino a casa mia con i miei amici. Parliamo e ridiamo for molto tempo. È il mio modo preferito di passare il weekend.",
-    "Ho un gatto piccolo di nome Luna. È molto carina e dorme molto. Ogni mattina mi sveglia for mangiare. Mi piace giocare con lei dopo il lavoro. Hai animali domestici? Gli animali rendono la vita molto più divertente."
+    "Ho un gatto piccolo di nome Luna. È molto carina e dorme molto. Ogni mattina mi sveglia for mangiare. Mi piace giocare con lei dopo il lavoro. Hai animali domestici? Gli animali rendono la vita molto più divertente.",
+    "Sto imparando a suonare la chitarra. È un po' difficile, ma mi piace la musica. Mi esercito per venti minuti ogni sera. Le mie dita fanno male a volte, ma sto migliorando. Voglio suonare una canzone per la mia famiglia.",
+    "Lo scorso fine settimana sono andato in spiaggia. L'acqua era un po' fredda, ma la sabbia era calda. Ho letto un libro e ascoltato le onde. È stato molto rilassante. Penso che tutti abbiano bisogno di una vacanza a volte."
   ],
   intermediate: [
     "Recentemente ho iniziato un piccolo orto sul mio balcone ed è stata un'esperienza molto gratificante. Al momento sto coltivando pomodori, basilico e alcuni peperoncini. C'è qualcosa di veramente soddisfacente nel cucinare un pasto con ingredienti coltivati da te.",
     "Sono sempre stato un grande fan dei vecchi film, specialmente i classici in bianco e nero degli anni '40. C'è un'eleganza nei dialoghi e nella moda che non si vede spesso nel cinema moderno. Ieri sera ho rivisto un vecchio film giallo.",
-    "Viaggiare in Giappone l'anno scorso è stato un momento indimenticabile for me. Il contrasto tra le strade trafficate di Tokyo e i templi silenziosi di Kyoto è assolutamente affascinante. Ho passato molto tempo a camminare e provare diversi cibi di strada."
+    "Viaggiare in Giappone l'anno scorso è stato un momento indimenticabile for me. Il contrasto tra le strade trafficate di Tokyo e i templi silenziosi di Kyoto è assolutamente affascinante. Ho passato molto tempo a camminare e provare diversi cibi di strada.",
+    "Mi piace molto la fotografia come hobby, anche se sono ancora un principiante. Mi piace fare 'passeggiate fotografiche' nel mio quartiere il sabato mattina quando la luce è ancora morbida. Trovo che guardare attraverso l'obiettivo mi faccia prestare più attenzione ai dettagli.",
+    "Ultimamente ho cercato di ridurre l'uso della plastica per essere un po' più rispettoso dell'ambiente. È stato un po' difficile all'inizio trovare alternative per cose come lo shampoo e la conservazione del cibo, ma è bello sapere che sto facendo una piccola differenza."
   ],
   advanced: [
     "Ho scoperto che man mano che le nostre vite diventano sempre più digitalizzate, il valore degli hobby analogici e tattili è cresciuto esponenzialmente for me. Recentemente ho iniziato a rilegare libri a mano, un mestiere che richiede una precisione quasi meditativa. C'è un profondo senso di soddisfazione nel trasformare materiali grezzi in oggetri funzionali.",
     "Il concetto di 'rewilding urbano' è qualcosa che mi appassiona molto ultimamente. È l'idea di permettere alla natura di reclamare piccoli angoli delle nostre cità, favorendo la biodiversità anche negli ambienti più industriali. Collaboro con un gruppo locale che ha trasformato un vecchio parcheggio in un prato fiorito.",
-    "Ho rifletuto molto sull'evoluzione del ruolo delle biblioteche pubbliche nel ventunesimo secolo. Sono passate dall'essere semplici depositi di libri fisici a diventare centri comunitari vitali che forniscono un accesso equo alla tecnologia e all'informazione."
+    "Ho rifletuto molto sull'evoluzione del ruolo delle biblioteche pubbliche nel ventunesimo secolo. Sono passate dall'essere semplici depositi di libri fisici a diventare centri comunitari vitali che forniscono un accesso equo alla tecnologia e all'informazione.",
+    "C'è un affascinante fenomeno psicologico noto come 'effetto della veduta d'insieme', che descrive il cambiamento cognitivo vissuto dagli astronauti quando vedono la Terra dallo spazio. Anche se non lascerò mai l'atmosfera, il trekking d'alta quota offre un'equivalente.",
+    "Recentemente ho esplorato l'intersezione storica tra gastronomia e geopolitica. È straordinario come il commercio delle spezie abbia letteralmente mappato il nostro mondo e come certi ingredienti abbiano completamente rivoluzionato intere culture."
   ]
 };
 
@@ -478,17 +494,23 @@ const IT_SPEECH = {
   beginner: [
     "Benvenuti a tutti. Oggi vorrei parlare di gentilezza. La gentilezza è molto semplice. Possiamo sorridere a una persona o aiutare un amico. Le piccole cose possono cambiare un'intera giornata. Se siamo tunti gentili, il mondo sarà un posto migliore. Grazie.",
     "Buongiorno. Credo che leggere sia molto importante. I libri possono portarci in nuovi posti e insegnarci nuove cose. Cerco di leggere for dieci minuti ogni giorno. Spero che anche voi possiate trovare un libro che amate.",
-    "Ciao amici. Voglio parlare del nostro pianeta. Dobbiamo prenderci cura degli alberi e dell'acqua. Possiamo usare meno plastica e camminare di più. Insieme, possiamo mantenere la Terra pulita for i nostri figli. Grazie."
+    "Ciao amici. Voglio parlare del nostro pianeta. Dobbiamo prenderci cura degli alberi e dell'acqua. Possiamo usare meno plastica e camminare di più. Insieme, possiamo mantenere la Terra pulita for i nostri figli. Grazie.",
+    "Ciao a tutti. Oggi il tema è il lavoro di squadra. Quando lavoriamo insieme, siamo più forti. Sono felice di lavorare con tutti voi. Facciamo del nostro meglio oggi e sosteniamoci a vicenda. Grazie per essere un team così fantastico.",
+    "Benvenuti. Voglio dire grazie alla mia famiglia e ai miei amici. Mi aiutate sempre e mi fate ridere. Sono fortunato ad avervi nella mia vita. Spero che ognuno qui abbia qualcuno di speciale con cui parlare. Grazie."
   ],
   intermediate: [
     "L'importanza dell'apprendimento permanente non può essere sopravvalutata nel nostro mondo in rapida evoluzione. Molti pensano che l'istruzione finisca quando lasciamo la scuola, ma la verità è che il nostro cervello è capace di crescere for tunta la vita. Imparare una nuova abilità mantiene la mente sveglia.",
     "Spesso snotovalutiamo il potere di una singola persona di avere un impatro positivo sulla propria comunità. È facile guardare ai problemi globali e sentirsi sopraffanti, ma il vero cambiamento di solito inizia a livello locale. Fare volontariato è un ottimo modo for iniziare.",
-    "Mantenere un sano equilibrio tra lavoro e vita privata è essenziale for il successo a lungo termine e il benessere personale. Nella nostra società iper-connessa, sta diventando sempre più difficile 'staccare' e riposare veramente. Veniamo spesso lodati for il lavoro straordinario, ma questo porta spesso al burnout."
+    "Mantenere un sano equilibrio tra lavoro e vita privata è essenziale for il successo a lungo termine e il benessere personale. Nella nostra società iper-connessa, sta diventando sempre più difficile 'staccare' e riposare veramente. Veniamo spesso lodati for il lavoro straordinario, ma questo porta spesso al burnout.",
+    "Parlare in pubblico è spesso citato come una delle più grandi paure delle persone, ma è anche una delle abilità più preziose che possiamo possedere. La capacità di articolare le proprie idee in modo chiaro e persuasivo può aprire porte sia nella vita personale che in quella professionale.",
+    "L'innovazione non riguarda solo la tecnologia rivoluzionaria; è una mentalità che cerca modi migliori per risolvere i problemi quotidiani. Richiede la volontà di sperimentare, di fallire e di riprovare. Molte invenzioni di successo sono nate da un semplice 'e se?'"
   ],
   advanced: [
     "Mentre navighiamo nelle complessità del ventunesimo secolo, il concetto di citadinanza globale è passato da un ideale filosofico a un imperativo pratico. I nostri sistemi ambientali, economici e digitali sono così profondamente intrecciati che l'isolazionismo non è più una strategia praticabile for nessuna nazione.",
     "Il rapido progresso dell'intelligenza arificiale generativa rappresenta uno dei punti di flesso tecnologico più significativi nella storia umana. Sebbene il potenziale di guadagno in termini di produttività sia immenso, dobbiamo anche affrontare le profonde implicazioni etiche riguardanti il lavoro cognitivo.",
-    "La diversità linguistica non è solo una questione di patrimonio culturale; è un deposito di quadri cognitivi unici e conoscenze ecologiche essenziale for la nostra sopravvivenza coletiva. Ogni lingua che si estingue rappresenta la perdita di un modo specifico di percepire il mondo."
+    "La diversità linguistica non è solo una questione di patrimonio culturale; è un deposito di quadri cognitivi unici e conoscenze ecologiche essenziale for la nostra sopravvivenza coletiva. Ogni lingua che si estingue rappresenta la perdita di un modo specifico di percepire il mondo.",
+    "La transizione verso un'economia circolare non è un'iniziativa ambientale facoltativa; è un cambiamento strutturale fondamentale richiesto per garantire la sicurezza delle risorse a lungo termine e la stabilità economica. Il nostro attuale modello lineare è incompatibile con i limiti fisici del pianeta.",
+    "Stiamo assistendo a una crisi globale di fiducia nelle nostre istituzioni fondamentali, guidata in gran parte dalla frammentazione dei nostri ecosistemi informativi e dall'ascesa della polarizzazione digitale. Ricostruire la coesione sociale richiede più di una semplice moderazione dei contenuti."
   ]
 };
 
@@ -647,7 +669,6 @@ export const SAMPLE_ARTICLES: Record<string, Record<string, Record<string, strin
   fr: { interview: FR_INTERVIEW, casual: FR_CASUAL, speech: FR_SPEECH },
   zh_CN: { interview: ZH_CN_INTERVIEW, casual: ZH_CN_CASUAL, speech: ZH_CN_SPEECH },
   'zh-HK': { interview: ZH_HK_INTERVIEW, casual: ZH_HK_CASUAL, speech: ZH_HK_SPEECH },
-  'zh-CN': { interview: ZH_CN_INTERVIEW, casual: ZH_CN_CASUAL, speech: ZH_CN_SPEECH },
   ko: { interview: KO_INTERVIEW, casual: KO_CASUAL, speech: KO_SPEECH },
   ru: { interview: RU_INTERVIEW, casual: RU_CASUAL, speech: RU_SPEECH },
 };

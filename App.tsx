@@ -347,7 +347,7 @@ const App: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center">
         <Loader2 className="text-indigo-500 animate-spin mb-4" size={48} />
-        <p className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Booting Fluency Engine...</p>
+        <p className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Booting Audit Engine...</p>
       </div>
     );
   }
@@ -369,8 +369,8 @@ const App: React.FC = () => {
             <BrainCircuit size={24} className="text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight leading-none">Fluency<span className="text-indigo-500">Coach</span></span>
-            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 mt-1">Client-Side Engine Active</span>
+            <span className="text-xl font-bold tracking-tight leading-none">IELTS<span className="text-indigo-500">Audit</span></span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 mt-1">Diagnostic System Active</span>
           </div>
         </div>
         <div className="flex gap-4">
@@ -395,7 +395,7 @@ const App: React.FC = () => {
               <ShieldCheck size={12} className="text-indigo-400" />
               <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400">Professional Diagnostic Platform</span>
             </div>
-            <h1 className="text-6xl font-extrabold mb-6 tracking-tighter text-white">Linguistic <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">Fluency Audit.</span></h1>
+            <h1 className="text-6xl font-extrabold mb-6 tracking-tighter text-white">IELTS <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">Diagnostic Audit.</span></h1>
             <p className="text-slate-400 text-lg mb-12 max-w-lg mx-auto">Multimodal assessment with real-time biometric tracking and clinical diagnostic reports.</p>
 
             {errorMessage && (

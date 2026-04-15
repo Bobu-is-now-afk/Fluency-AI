@@ -13,7 +13,6 @@ import {
   X,
   Video
 } from 'lucide-react';
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { IELTS_QUESTIONS } from '../constants';
 import { AnalysisMetrics } from '../types';
 import { useFaceMesh } from '../hooks/useFaceMesh';
@@ -62,32 +61,54 @@ const ExaminerStatusIndicator: React.FC<{
   state: 'speaking' | 'thinking' | 'listening' | 'idle' 
 }> = ({ state }) => {
   return (
-    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none">
-      <div className="relative flex items-center justify-center w-12 h-12">
+    <div className="absolute top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3 pointer-events-none">
+      <div className="relative flex items-center justify-center w-16 h-16">
+        {/* Background Pulse Ring for active states */}
+        {state !== 'idle' && (
+          <div className="absolute inset-0 rounded-full border border-indigo-500/30 animate-pulse-ring" />
+        )}
+
         {state === 'speaking' && (
-          <div className="flex items-end gap-1 px-3 py-2 bg-indigo-600/20 backdrop-blur-xl border border-indigo-500/30 rounded-full">
-            {[...Array(5)].map((_, i) => (
+          <div className="flex items-end gap-1.5 px-4 py-3 bg-indigo-600/10 backdrop-blur-2xl border border-indigo-500/40 rounded-3xl shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+            {[...Array(7)].map((_, i) => (
               <div 
                 key={i} 
-                className="w-1 bg-indigo-400 rounded-full animate-wave-bar" 
-                style={{ animationDelay: `${i * 0.1}s`, height: '8px' }}
+                className="w-1.5 bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-full animate-wave-bar" 
+                style={{ 
+                  animationDelay: `${i * 0.15}s`, 
+                  height: '12px',
+                  animationDuration: `${0.6 + Math.random() * 0.4}s`
+                }}
               />
             ))}
           </div>
         )}
 
         {state === 'thinking' && (
-          <div className="w-10 h-10 border-4 border-slate-800 border-t-indigo-500 rounded-full animate-thinking shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
+          <div className="relative w-12 h-12">
+            <div className="absolute inset-0 border-4 border-slate-800/50 rounded-full" />
+            <div className="absolute inset-0 border-4 border-transparent border-t-indigo-500 rounded-full animate-thinking shadow-[0_0_20px_rgba(99,102,241,0.6)]" />
+            <div className="absolute inset-2 border-2 border-transparent border-b-emerald-500 rounded-full animate-thinking" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+          </div>
         )}
 
         {state === 'listening' && (
-          <div className="w-6 h-6 bg-indigo-500 rounded-full animate-breathing border-2 border-indigo-300 shadow-[0_0_20px_rgba(99,102,241,0.6)]" />
+          <div className="relative flex items-center justify-center">
+            <div className="w-8 h-8 bg-indigo-500 rounded-full animate-breathing border-2 border-indigo-300 shadow-[0_0_30px_rgba(99,102,241,0.8)]" />
+            <div className="absolute w-12 h-12 rounded-full border border-indigo-500/20 animate-ping" />
+          </div>
         )}
 
         {state === 'idle' && (
-          <div className="w-6 h-6 bg-slate-800 rounded-full opacity-50 border border-slate-700" />
+          <div className="w-6 h-6 bg-slate-900 rounded-full opacity-30 border border-slate-800" />
         )}
       </div>
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400/70 drop-shadow-sm">
+        {state === 'speaking' && 'Examiner Speaking'}
+        {state === 'thinking' && 'Analyzing Audio'}
+        {state === 'listening' && 'Listening...'}
+        {state === 'idle' && 'Standby'}
+      </span>
     </div>
   );
 };
@@ -114,6 +135,7 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
   const isMountedRef = useRef<boolean>(true);
+  const isInitializingRef = useRef<boolean>(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const startTimeRef = useRef<number>(0);
   const userId = useRef(getAnonymousUserId());
@@ -226,7 +248,9 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
   }, [onReport, part, question]);
 
   const initializeHardware = useCallback(async () => {
+    if (isInitializingRef.current) return;
     try {
+      isInitializingRef.current = true;
       setHardwareError(null);
       stopAllHardware();
       await new Promise(r => setTimeout(r, 800));
@@ -271,6 +295,8 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
     } catch (e) {
       setHardwareError((e as Error).message || "Hardware Access Denied.");
       setStage('selection'); 
+    } finally {
+      isInitializingRef.current = false;
     }
   }, [stopAllHardware, processAudit]);
 
@@ -327,21 +353,22 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
     setIsSpeaking(true);
 
     try {
-      const ai = coachService.getAI();
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
-        contents: `Speak naturally as a UK IELTS examiner: ${qText}`,
-        config: {
-          responseModalities: [Modality.AUDIO],
-          speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: 'Charon' },
-              },
+      const genAI = coachService.getAI();
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await (model as any).generateContent({
+        contents: [{
+          role: 'user',
+          parts: [{ text: `Speak naturally as a UK IELTS examiner: ${qText}` }]
+        }],
+        responseModalities: ["AUDIO"],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: 'Charon' },
           },
         },
       });
 
-      const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      const base64Audio = result.response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       
       if (base64Audio) {
         if (!audioContextRef.current) {

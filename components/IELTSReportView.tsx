@@ -14,14 +14,13 @@ import {
   QrCode,
   Share2,
   Target,
-  BrainCircuit,
   ShieldCheck,
   ArrowLeft,
   Languages as LanguagesIcon
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES } from '../constants';
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { SchemaType } from "@google/generative-ai";
 import html2canvas from 'html2canvas';
 import { coachService } from '../lib/aiService';
 
@@ -80,7 +79,7 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
         windowHeight: 1100
       });
       const link = document.createElement('a');
-      link.download = `FluencyCoach_DiagnosticAudit_${data.id.slice(0, 5)}.png`;
+      link.download = `IELTS_DiagnosticAudit_${data.id.slice(0, 5)}.png`;
       link.href = canvas.toDataURL('image/png', 0.9);
       link.click();
     } catch (err) {
@@ -100,23 +99,29 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
     
     setIsTranslating(true);
     try {
-      const ai = coachService.getAI();
       const prompt = `Translate the following IELTS examiner feedback from English to ${lang.label}. 
       Original Tips: ${data.feedback_tips.join(' | ')}
       
       Maintain a professional, formal examiner tone in ${lang.label}. 
       Return ONLY valid JSON with an array of translated tips.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        // Simplified content parameter for single string prompt
-        contents: prompt,
-        config: {
+      const genAI = coachService.getAI();
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-1.5-flash',
+        systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone."
+      });
+
+      const translationResult = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [{ text: prompt }]
+        }],
+        generationConfig: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: Type.OBJECT,
+            type: SchemaType.OBJECT,
             properties: {
-              translated_tips: { type: Type.ARRAY, items: { type: Type.STRING } }
+              translated_tips: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
             },
             required: ["translated_tips"]
           }
@@ -124,10 +129,10 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
       });
       
       // Ensure accessing text as a property, not a method
-      const jsonStr = response.text;
-      const result = JSON.parse(jsonStr || '{}');
-      if (result.translated_tips) {
-        setTranslatedTips(result.translated_tips);
+      const jsonStr = translationResult.response.text();
+      const parsedResult = JSON.parse(jsonStr || '{}');
+      if (parsedResult.translated_tips) {
+        setTranslatedTips(parsedResult.translated_tips);
         setShowTranslated(true);
       }
     } catch (err) {
@@ -144,7 +149,7 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
 
   return (
     <div className="max-w-6xl mx-auto py-12 px-4 animate-in fade-in slide-in-from-bottom-8 duration-700 relative">
-      {/* Hidden Battle Report Template */}
+      {/* Hidden Diagnostic Audit Template */}
       <div className="fixed left-[-9999px] top-0 pointer-events-none">
         <div 
           ref={shareRef}
@@ -159,9 +164,9 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
               <div>
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-600/40">
-                    <BrainCircuit size={32} className="text-white" />
+                    <ShieldCheck size={32} className="text-white" />
                   </div>
-                  <span className="text-3xl font-black tracking-tighter">Fluency<span className="text-indigo-500">Coach</span></span>
+                  <span className="text-3xl font-black tracking-tighter">IELTS<span className="text-indigo-500">Audit</span></span>
                 </div>
                 <h2 className="text-7xl font-black italic tracking-tighter text-white uppercase leading-none">Diagnostic<br/>Audit</h2>
                 <div className="h-2 w-32 bg-indigo-600 mt-6 rounded-full" />

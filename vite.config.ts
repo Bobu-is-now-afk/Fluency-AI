@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'vendor-ai': ['@google/genai'],
+            'vendor-ai': ['@google/generative-ai'],
             'vendor-ui': ['lucide-react', 'react', 'react-dom'],
             'vendor-utils': ['html2canvas', 'dexie']
           }
@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 1000,
     },
     define: {
+      global: 'window',
       // In Vite, variables must be prefixed with VITE_ to be exposed to the client.
       // We map the injected GEMINI_API_KEY to process.env.GEMINI_API_KEY for the SDK.
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || ''),

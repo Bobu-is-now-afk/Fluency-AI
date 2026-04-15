@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES, COACHING_CONTEXTS } from '../constants';
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { SchemaType } from "@google/generative-ai";
 import { coachService } from '../lib/aiService';
 
 interface ReportViewProps {
@@ -67,7 +67,6 @@ export const ReportView: React.FC<ReportViewProps> = ({ data, onRestart }) => {
     }
     setIsTranslating(true);
     try {
-      const ai = coachService.getAI();
       const prompt = `Translate the following speech feedback from ${currentLanguage?.label} to ${lang.label}. 
       Maintain a professional, encouraging coaching tone.
       
@@ -77,25 +76,32 @@ export const ReportView: React.FC<ReportViewProps> = ({ data, onRestart }) => {
       
       Return ONLY valid JSON.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: {
-          thinkingConfig: { thinkingBudget: 0 },
+      const genAI = coachService.getAI();
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-1.5-flash',
+        systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone."
+      });
+
+      const result = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [{ text: prompt }]
+        }],
+        generationConfig: {
           responseMimeType: "application/json",
           responseSchema: {
-            type: Type.OBJECT,
+            type: SchemaType.OBJECT,
             properties: {
-              emotion: { type: Type.STRING },
-              explanation: { type: Type.STRING },
-              tips: { type: Type.ARRAY, items: { type: Type.STRING } }
+              emotion: { type: SchemaType.STRING },
+              explanation: { type: SchemaType.STRING },
+              tips: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
             },
             required: ["emotion", "explanation", "tips"]
           }
         }
       });
       
-      const jsonStr = response.text?.trim();
+      const jsonStr = result.response.text()?.trim();
       if (jsonStr) {
         setTranslated(JSON.parse(jsonStr));
         setShowTranslated(true);

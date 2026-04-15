@@ -43,7 +43,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onAuthSuccess }) => {
         <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4 shadow-2xl shadow-indigo-500/20">
           <BrainCircuit size={32} className="text-white" />
         </div>
-        <h1 className="text-3xl font-bold tracking-tight">Fluency<span className="text-indigo-500">Coach</span></h1>
+        <h1 className="text-3xl font-bold tracking-tight">IELTS<span className="text-indigo-500">Audit</span></h1>
       </div>
 
       <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-[2.5rem] p-8 shadow-2xl">

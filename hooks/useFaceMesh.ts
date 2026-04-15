@@ -83,7 +83,7 @@ export const useFaceMesh = (
         smileIntensity: rawSmileIntensity || 0
       };
 
-      // Apply Moving Average Filter
+      // Apply Moving Average Filter (10-frame window as requested)
       bufferRef.current.push(rawMetrics);
       if (bufferRef.current.length > BUFFER_SIZE) {
         bufferRef.current.shift();
@@ -101,12 +101,13 @@ export const useFaceMesh = (
         return acc;
       }, { yaw: 0, pitch: 0, smileIntensity: 0, eyeContactCount: 0, smileCount: 0 });
 
+      // Use a slightly higher threshold for booleans to prevent flicker from blinks
       setMetrics({
         yaw: smoothed.yaw / count,
         pitch: smoothed.pitch / count,
         smileIntensity: smoothed.smileIntensity / count,
-        hasEyeContact: (smoothed.eyeContactCount / count) > 0.5,
-        isSmiling: (smoothed.smileCount / count) > 0.5
+        hasEyeContact: (smoothed.eyeContactCount / count) >= 0.6, // 60% threshold to resist blinks
+        isSmiling: (smoothed.smileCount / count) >= 0.5
       });
     }
     canvasCtx.restore();
