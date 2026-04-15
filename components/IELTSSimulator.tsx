@@ -13,6 +13,7 @@ import {
   X,
   Video
 } from 'lucide-react';
+import { GoogleGenAI } from '@google/genai';
 import { IELTS_QUESTIONS } from '../constants';
 import { AnalysisMetrics } from '../types';
 import { useFaceMesh } from '../hooks/useFaceMesh';
@@ -353,22 +354,24 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
     setIsSpeaking(true);
 
     try {
-      const genAI = coachService.getAI();
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await (model as any).generateContent({
+      const ai = coachService.getAI();
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
         contents: [{
           role: 'user',
           parts: [{ text: `Speak naturally as a UK IELTS examiner: ${qText}` }]
         }],
-        responseModalities: ["AUDIO"],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: 'Charon' },
+        config: {
+          responseModalities: ["AUDIO"],
+          speechConfig: {
+            voiceConfig: {
+              prebuiltVoiceConfig: { voiceName: 'Charon' },
+            },
           },
-        },
+        }
       });
 
-      const base64Audio = result.response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
       
       if (base64Audio) {
         if (!audioContextRef.current) {
@@ -601,7 +604,7 @@ export const IELTSSimulator: React.FC<IELTSSimulatorProps> = ({ onReport, onExit
         <div className="text-center">
           <Loader2 size={40} className="text-indigo-400 animate-spin mx-auto mb-10" />
           <h2 className="text-3xl font-black text-white italic tracking-tight">Syncing Examiner Audit...</h2>
-          <p className="text-slate-500">Generating linguistic report using Gemini-3 PRO.</p>
+          <p className="text-slate-500">Generating linguistic report using Gemini-3.1 PRO.</p>
         </div>
       )}
     </div>

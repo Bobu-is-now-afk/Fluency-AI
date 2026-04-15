@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES, COACHING_CONTEXTS } from '../constants';
-import { SchemaType } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { coachService } from '../lib/aiService';
 
 interface ReportViewProps {
@@ -76,32 +76,29 @@ export const ReportView: React.FC<ReportViewProps> = ({ data, onRestart }) => {
       
       Return ONLY valid JSON.`;
 
-      const genAI = coachService.getAI();
-      const model = genAI.getGenerativeModel({ 
-        model: 'gemini-1.5-flash',
-        systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone."
-      });
-
-      const result = await model.generateContent({
+      const ai = coachService.getAI();
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
         contents: [{
           role: 'user',
           parts: [{ text: prompt }]
         }],
-        generationConfig: {
+        config: {
+          systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone.",
           responseMimeType: "application/json",
           responseSchema: {
-            type: SchemaType.OBJECT,
+            type: Type.OBJECT,
             properties: {
-              emotion: { type: SchemaType.STRING },
-              explanation: { type: SchemaType.STRING },
-              tips: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
+              emotion: { type: Type.STRING },
+              explanation: { type: Type.STRING },
+              tips: { type: Type.ARRAY, items: { type: Type.STRING } }
             },
             required: ["emotion", "explanation", "tips"]
           }
         }
       });
       
-      const jsonStr = result.response.text()?.trim();
+      const jsonStr = response.text?.trim();
       if (jsonStr) {
         setTranslated(JSON.parse(jsonStr));
         setShowTranslated(true);

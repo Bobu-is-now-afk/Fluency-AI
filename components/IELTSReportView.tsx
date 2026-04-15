@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { AnalysisMetrics, LanguageConfig } from '../types';
 import { SUPPORTED_LANGUAGES } from '../constants';
-import { SchemaType } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import html2canvas from 'html2canvas';
 import { coachService } from '../lib/aiService';
 
@@ -105,31 +105,27 @@ export const IELTSReportView: React.FC<IELTSReportViewProps> = ({ data, onRetry,
       Maintain a professional, formal examiner tone in ${lang.label}. 
       Return ONLY valid JSON with an array of translated tips.`;
 
-      const genAI = coachService.getAI();
-      const model = genAI.getGenerativeModel({ 
-        model: 'gemini-1.5-flash',
-        systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone."
-      });
-
-      const translationResult = await model.generateContent({
+      const ai = coachService.getAI();
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
         contents: [{
           role: 'user',
           parts: [{ text: prompt }]
         }],
-        generationConfig: {
+        config: {
+          systemInstruction: "You are a professional IELTS Diagnostic Auditor. Translate the provided text into the target language precisely, maintaining the clinical and objective tone.",
           responseMimeType: "application/json",
           responseSchema: {
-            type: SchemaType.OBJECT,
+            type: Type.OBJECT,
             properties: {
-              translated_tips: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
+              translated_tips: { type: Type.ARRAY, items: { type: Type.STRING } }
             },
             required: ["translated_tips"]
           }
         }
       });
       
-      // Ensure accessing text as a property, not a method
-      const jsonStr = translationResult.response.text();
+      const jsonStr = response.text;
       const parsedResult = JSON.parse(jsonStr || '{}');
       if (parsedResult.translated_tips) {
         setTranslatedTips(parsedResult.translated_tips);
